@@ -20,7 +20,8 @@ public class LoginController {
     @RequestMapping(value = "/qq", method = RequestMethod.GET)
     private String qqLogin(ModelMap map) {
         map.addAttribute("title", "qq登录");
-        map.addAttribute("imgPath", smartQQService.startService());
+        map.addAttribute("imgPath", smartQQService.getQRCode());
+        smartQQService.verifyQRCode();
         return "login";
     }
 

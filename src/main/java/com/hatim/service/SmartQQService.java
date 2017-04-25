@@ -7,13 +7,29 @@ package com.hatim.service;
 public interface SmartQQService {
     /**
      * 开启服务
+     *
      * @return
      */
-    String startService();
+    void startService();
 
     /**
      * 关闭服务
+     *
      * @return
      */
     boolean stopService();
+
+    /**
+     * 获取二维码
+     *
+     * @return
+     */
+    String getQRCode();
+
+    /**
+     * 校验二维码
+     *
+     * @return
+     */
+    void verifyQRCode();
 }
