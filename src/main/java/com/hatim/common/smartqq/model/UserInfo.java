@@ -1,4 +1,4 @@
-package com.hatim.smartqq.model;
+package com.hatim.common.smartqq.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

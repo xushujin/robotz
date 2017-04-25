@@ -1,4 +1,4 @@
-package com.hatim.enu;
+package com.hatim.common.contents.enu;
 
 /**
  * Created by Hatim on 2017/4/24.

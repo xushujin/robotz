@@ -1,9 +1,9 @@
-package com.hatim.smartqq.callback;
+package com.hatim.common.smartqq.callback;
 
 
-import com.hatim.smartqq.model.DiscussMessage;
-import com.hatim.smartqq.model.GroupMessage;
-import com.hatim.smartqq.model.Message;
+import com.hatim.common.smartqq.model.DiscussMessage;
+import com.hatim.common.smartqq.model.GroupMessage;
+import com.hatim.common.smartqq.model.Message;
 
 /**
  * 收到消息的回调
