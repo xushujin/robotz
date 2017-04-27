@@ -1,5 +1,6 @@
 package com.hatim.web;
 
+import com.hatim.common.contents.Global;
 import com.hatim.service.SmartQQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,12 @@ public class LoginController {
 
     @RequestMapping(value = "/qq", method = RequestMethod.GET)
     private String qqLogin(ModelMap map) {
+        if (!Global.isWaittingLogin) {
+            Global.imgUrl = smartQQService.getQRCode();
+            smartQQService.verifyQRCode();
+        }
         map.addAttribute("title", "qq登录");
-        map.addAttribute("imgPath", smartQQService.getQRCode());
-        smartQQService.verifyQRCode();
+        map.addAttribute("imgPath", Global.imgUrl);
         return "login";
     }
 
