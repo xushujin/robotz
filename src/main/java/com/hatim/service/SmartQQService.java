@@ -18,18 +18,4 @@ public interface SmartQQService {
      * @return
      */
     boolean stopService();
-
-    /**
-     * 获取二维码
-     *
-     * @return
-     */
-    String getQRCode();
-
-    /**
-     * 校验二维码
-     *
-     * @return
-     */
-    void verifyQRCode();
 }

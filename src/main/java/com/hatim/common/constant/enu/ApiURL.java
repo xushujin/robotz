@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.constant;
+package com.hatim.common.constant.enu;
 
 /**
  * Api的请求地址和Referer

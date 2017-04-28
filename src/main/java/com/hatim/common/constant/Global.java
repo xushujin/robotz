@@ -1,6 +1,6 @@
-package com.hatim.common.contents;
+package com.hatim.common.constant;
 
-import com.hatim.common.smartqq.model.*;
+import com.hatim.model.*;
 import net.dongliu.requests.Client;
 import net.dongliu.requests.Session;
 
@@ -41,19 +41,19 @@ public class Global {
     public static final String CONTAINS_KEY = "黑子";
 
     // 好友列表
-    public static List<Friend> friendList = new ArrayList<>();
+    public static List<FriendModel> friendList = new ArrayList<>();
     // 群列表
-    public static List<Group> groupList = new ArrayList<>();
+    public static List<GroupModel> groupList = new ArrayList<>();
     // 讨论组列表
-    public static List<Discuss> discussList = new ArrayList<>();
+    public static List<DiscussModel> discussList = new ArrayList<>();
     // 好友id到好友映射
-    public static Map<Long, Friend> friendFromID = new HashMap<>();
+    public static Map<Long, FriendModel> friendFromID = new HashMap<>();
     // 群id到群映射
-    public static Map<Long, Group> groupFromID = new HashMap<>();
+    public static Map<Long, GroupModel> groupFromID = new HashMap<>();
     // 群id到群详情映射
-    public static Map<Long, GroupInfo> groupInfoFromID = new HashMap<>();
+    public static Map<Long, GroupInfoModel> groupInfoFromID = new HashMap<>();
     // 讨论组id到讨论组映射
-    public static Map<Long, Discuss> discussFromID = new HashMap<>();
+    public static Map<Long, DiscussModel> discussFromID = new HashMap<>();
     // 讨论组id到讨论组详情映射
-    public static Map<Long, DiscussInfo> discussInfoFromID = new HashMap<>();
+    public static Map<Long, DiscussInfoModel> discussInfoFromID = new HashMap<>();
 }

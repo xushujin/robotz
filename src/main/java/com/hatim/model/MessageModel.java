@@ -1,18 +1,16 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 群消息.
+ * 消息.
  *
  * @author ScienJus
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class GroupMessage {
-
-    private long groupId;
+public class MessageModel {
 
     private long time;
 
@@ -20,11 +18,11 @@ public class GroupMessage {
 
     private long userId;
 
-    private Font font;
+    private FontModel font;
 
-    public GroupMessage(JSONObject json) {
+    public MessageModel(JSONObject json) {
         JSONArray cont = json.getJSONArray("content");
-        this.font = cont.getJSONArray(0).getObject(1, Font.class);
+        this.font = cont.getJSONArray(0).getObject(1, FontModel.class);
 
         final int size = cont.size();
         final StringBuilder contentBuilder = new StringBuilder();
@@ -34,16 +32,7 @@ public class GroupMessage {
         this.content = contentBuilder.toString();
 
         this.time = json.getLongValue("time");
-        this.groupId = json.getLongValue("group_code");
-        this.userId = json.getLongValue("send_uin");
-    }
-
-    public long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(long groupId) {
-        this.groupId = groupId;
+        this.userId = json.getLongValue("from_uin");
     }
 
     public long getTime() {
@@ -70,11 +59,11 @@ public class GroupMessage {
         this.userId = userId;
     }
 
-    public Font getFont() {
+    public FontModel getFont() {
         return font;
     }
 
-    public void setFont(Font font) {
+    public void setFont(FontModel font) {
         this.font = font;
     }
 

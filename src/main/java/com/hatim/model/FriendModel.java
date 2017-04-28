@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 /**
  * 好友.
@@ -7,7 +7,7 @@ package com.hatim.common.smartqq.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/18.
  */
-public class Friend {
+public class FriendModel {
 
     private long userId;
 
@@ -21,7 +21,7 @@ public class Friend {
 
     @Override
     public String toString() {
-        return "Friend{"
+        return "FriendModel{"
                 + "userId=" + userId
                 + ", markname='" + markname + '\''
                 + ", nickname='" + nickname + '\''

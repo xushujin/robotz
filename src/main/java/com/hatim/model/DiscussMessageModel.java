@@ -1,16 +1,18 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 消息.
+ * 讨论组消息.
  *
  * @author ScienJus
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class Message {
+public class DiscussMessageModel {
+
+    private long discussId;
 
     private long time;
 
@@ -18,21 +20,23 @@ public class Message {
 
     private long userId;
 
-    private Font font;
+    private FontModel font;
 
-    public Message(JSONObject json) {
-        JSONArray cont = json.getJSONArray("content");
-        this.font = cont.getJSONArray(0).getObject(1, Font.class);
-
-        final int size = cont.size();
-        final StringBuilder contentBuilder = new StringBuilder();
-        for (int i = 1; i < size; i++) {
-            contentBuilder.append(cont.getString(i));
-        }
-        this.content = contentBuilder.toString();
-
+    public DiscussMessageModel(JSONObject json) {
+        JSONArray content = json.getJSONArray("content");
+        this.font = content.getJSONArray(0).getObject(1, FontModel.class);
+        this.content = content.getString(1);
         this.time = json.getLongValue("time");
-        this.userId = json.getLongValue("from_uin");
+        this.discussId = json.getLongValue("did");
+        this.userId = json.getLongValue("send_uin");
+    }
+
+    public long getDiscussId() {
+        return discussId;
+    }
+
+    public void setDiscussId(long discussId) {
+        this.discussId = discussId;
     }
 
     public long getTime() {
@@ -59,11 +63,11 @@ public class Message {
         this.userId = userId;
     }
 
-    public Font getFont() {
+    public FontModel getFont() {
         return font;
     }
 
-    public void setFont(Font font) {
+    public void setFont(FontModel font) {
         this.font = font;
     }
 

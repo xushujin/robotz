@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class GroupInfo {
+public class GroupInfoModel {
 
     private long gid;
 
@@ -24,9 +24,9 @@ public class GroupInfo {
 
     private String markname;
 
-    private List<GroupUser> users = new ArrayList<>();
+    private List<GroupUserModel> users = new ArrayList<>();
 
-    public void addUser(GroupUser user) {
+    public void addUser(GroupUserModel user) {
         this.users.add(user);
     }
 
@@ -78,11 +78,11 @@ public class GroupInfo {
         this.markname = markname;
     }
 
-    public List<GroupUser> getUsers() {
+    public List<GroupUserModel> getUsers() {
         return users;
     }
 
-    public void setUsers(List<GroupUser> users) {
+    public void setUsers(List<GroupUserModel> users) {
         this.users = users;
     }
 

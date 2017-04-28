@@ -10,7 +10,7 @@ public class DateUtil {
     /**
      * 获取本地系统时间
      *
-     * @return 本地系统时间
+     * @return
      */
     public static String getTime() {
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

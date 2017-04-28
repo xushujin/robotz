@@ -19,7 +19,7 @@ public class LogoutController {
     @RequestMapping(value = "/qq", method = RequestMethod.GET)
     private String qqLogout(ModelMap map) {
         map.addAttribute("title", "qq登录");
-        map.addAttribute("imgPath", smartQQService.getQRCode());
+//        map.addAttribute("imgPath", smartQQService.());
         return "login";
     }
 

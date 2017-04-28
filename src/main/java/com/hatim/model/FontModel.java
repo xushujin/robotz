@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 /**
  * 字体.
@@ -7,12 +7,12 @@ package com.hatim.common.smartqq.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class Font {
+public class FontModel {
 
-    public static final Font DEFAULT_FONT = defaultFont();
+    public static final FontModel DEFAULT_FONT = defaultFont();
 
-    private static Font defaultFont() {
-        Font font = new Font();
+    private static FontModel defaultFont() {
+        FontModel font = new FontModel();
         font.setColor("000000");
         font.setStyle(new int[]{0, 0, 0});
         font.setName("宋体");

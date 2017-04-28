@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 /**
  * 讨论组成员.
@@ -7,7 +7,7 @@ package com.hatim.common.smartqq.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class DiscussUser {
+public class DiscussUserModel {
 
     private long uin;
 
@@ -19,7 +19,7 @@ public class DiscussUser {
 
     @Override
     public String toString() {
-        return "DiscussUser{"
+        return "DiscussUserModel{"
                 + "uin=" + uin
                 + ", nick='" + nick + '\''
                 + ", clientType='" + clientType + '\''

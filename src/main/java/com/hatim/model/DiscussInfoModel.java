@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class DiscussInfo {
+public class DiscussInfoModel {
 
     @JSONField(name = "did")
     private long id;
@@ -20,9 +20,9 @@ public class DiscussInfo {
     @JSONField(name = "discu_name")
     private String name;
 
-    private List<DiscussUser> users = new ArrayList<>();
+    private List<DiscussUserModel> users = new ArrayList<>();
 
-    public void addUser(DiscussUser user) {
+    public void addUser(DiscussUserModel user) {
         this.users.add(user);
     }
 
@@ -42,11 +42,11 @@ public class DiscussInfo {
         this.name = name;
     }
 
-    public List<DiscussUser> getUsers() {
+    public List<DiscussUserModel> getUsers() {
         return users;
     }
 
-    public void setUsers(List<DiscussUser> users) {
+    public void setUsers(List<DiscussUserModel> users) {
         this.users = users;
     }
 

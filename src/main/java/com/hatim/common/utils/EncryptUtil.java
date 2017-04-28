@@ -5,7 +5,13 @@ package com.hatim.common.utils;
  */
 public class EncryptUtil {
 
-    //hash加密方法
+    /**
+     * hash加密方法
+     *
+     * @param x
+     * @param K
+     * @return
+     */
     public static String hash(long x, String K) {
         int[] N = new int[4];
         for (int T = 0; T < K.length(); T++) {
@@ -33,7 +39,12 @@ public class EncryptUtil {
         return V1;
     }
 
-    //用于生成ptqrtoken的哈希函数
+    /**
+     * 用于生成ptqrtoken的哈希函数
+     *
+     * @param s
+     * @return
+     */
     public static int hash33(String s) {
         int e = 0, n = s.length();
         for (int i = 0; n > i; ++i)

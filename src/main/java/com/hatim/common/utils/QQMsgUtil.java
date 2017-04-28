@@ -3,15 +3,17 @@ package com.hatim.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hatim.common.contents.Global;
-import com.hatim.common.smartqq.callback.MessageCallback;
-import com.hatim.common.smartqq.constant.ApiURL;
-import com.hatim.common.smartqq.model.DiscussMessage;
-import com.hatim.common.smartqq.model.Font;
-import com.hatim.common.smartqq.model.GroupMessage;
-import com.hatim.common.smartqq.model.Message;
+import com.hatim.common.constant.Global;
+import com.hatim.common.constant.enu.ApiURL;
+import com.hatim.model.DiscussMessageModel;
+import com.hatim.model.FontModel;
+import com.hatim.model.GroupMessageModel;
+import com.hatim.model.MessageModel;
+import com.hatim.service.QQMessageService;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.exception.RequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -19,6 +21,8 @@ import java.util.Arrays;
  * Created by Hatim on 2017/4/27.
  */
 public class QQMsgUtil {
+    //日志
+    private static final Logger logger = LoggerFactory.getLogger(QQMsgUtil.class);
     /**
      * 发送群消息
      *
@@ -29,7 +33,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("group_uin", groupId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", Font.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -49,7 +53,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("did", discussId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", Font.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -69,7 +73,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("to", friendId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", Font.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -84,7 +88,7 @@ public class QQMsgUtil {
      *
      * @param callback 获取消息后的回调
      */
-    public static void pollMessage(MessageCallback callback) {
+    public static void pollMessage(QQMessageService callback) {
 
         JSONObject r = new JSONObject();
         r.put("ptwebqq", Global.ptwebqq);
@@ -98,40 +102,59 @@ public class QQMsgUtil {
             JSONObject message = array.getJSONObject(i);
             String type = message.getString("poll_type");
             if ("message".equals(type)) {
-                callback.onMessage(new Message(message.getJSONObject("value")));
+                callback.onMessage(new MessageModel(message.getJSONObject("value")));
             } else if ("group_message".equals(type)) {
-                callback.onGroupMessage(new GroupMessage(message.getJSONObject("value")));
+                callback.onGroupMessage(new GroupMessageModel(message.getJSONObject("value")));
             } else if ("discu_message".equals(type)) {
-                callback.onDiscussMessage(new DiscussMessage(message.getJSONObject("value")));
+                callback.onDiscussMessage(new DiscussMessageModel(message.getJSONObject("value")));
             }
         }
     }
 
-    //检查消息是否发送成功
+    /**
+     * 检查消息是否发送成功
+     *
+     * @param response
+     */
     public static void checkSendMsgResult(Response<String> response) {
         if (response.getStatusCode() != 200) {
-            System.out.println("发送失败，Http返回码" + response.getStatusCode());
+            logger.info("发送失败，Http返回码" + response.getStatusCode());
         }
         JSONObject json = JSON.parseObject(response.getBody());
         Integer errCode = json.getInteger("errCode");
         if (errCode != null && errCode == 0) {
-            System.out.println("发送成功");
+            logger.info("发送成功");
         } else {
-            System.out.println("发送失败，Api返回码" + json.getInteger("retcode"));
+            logger.info("发送失败，Api返回码" + json.getInteger("retcode"));
         }
     }
 
-    //获取返回json的result字段（JSONArray类型）
+    /**
+     * 获取返回json的result字段（JSONArray类型）
+     *
+     * @param response
+     * @return
+     */
     public static JSONArray getJsonArrayResult(Response<String> response) {
         return getResponseJson(response).getJSONArray("result");
     }
 
-    //获取返回json的result字段（JSONObject类型）
+    /**
+     * 获取返回json的result字段（JSONObject类型）
+     *
+     * @param response
+     * @return
+     */
     public static JSONObject getJsonObjectResult(Response<String> response) {
         return getResponseJson(response).getJSONObject("result");
     }
 
-    //检验Json返回结果
+    /**
+     * 检验Json返回结果
+     *
+     * @param response
+     * @return
+     */
     public static JSONObject getResponseJson(Response<String> response) {
         if (response.getStatusCode() != 200) {
             throw new RequestException(String.format("请求失败，Http返回码[%d]", response.getStatusCode()));
@@ -143,11 +166,11 @@ public class QQMsgUtil {
         } else if (retCode != 0) {
             switch (retCode) {
                 case 103: {
-                    System.out.println("请求失败，Api返回码[103]。你需要进入http://w.qq.com，检查是否能正常接收消息。如果可以的话点击[设置]->[退出登录]后查看是否恢复正常");
+                    logger.info("请求失败，Api返回码[103]。你需要进入http://w.qq.com，检查是否能正常接收消息。如果可以的话点击[设置]->[退出登录]后查看是否恢复正常");
                     break;
                 }
                 case 100100: {
-                    System.out.println("请求失败，Api返回码[100100]");
+                    logger.info("请求失败，Api返回码[100100]");
                     break;
                 }
                 default: {

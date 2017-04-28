@@ -1,4 +1,4 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class Category {
+public class CategoryModel {
 
     private int index;
 
@@ -18,15 +18,15 @@ public class Category {
 
     private String name;
 
-    private List<Friend> friends = new ArrayList<>();
+    private List<FriendModel> friends = new ArrayList<>();
 
-    public void addFriend(Friend friend) {
+    public void addFriend(FriendModel friend) {
         this.friends.add(friend);
     }
 
     @Override
     public String toString() {
-        return "Category{"
+        return "CategoryModel{"
                 + "index=" + index
                 + ", sort=" + sort
                 + ", name='" + name + '\''
@@ -34,8 +34,8 @@ public class Category {
                 + '}';
     }
 
-    public static Category defaultCategory() {
-        Category category = new Category();
+    public static CategoryModel defaultCategory() {
+        CategoryModel category = new CategoryModel();
         category.setIndex(0);
         category.setSort(0);
         category.setName("我的好友");
@@ -66,11 +66,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Friend> getFriends() {
+    public List<FriendModel> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Friend> friends) {
+    public void setFriends(List<FriendModel> friends) {
         this.friends = friends;
     }
 

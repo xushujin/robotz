@@ -1,18 +1,18 @@
-package com.hatim.common.smartqq.model;
+package com.hatim.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 讨论组消息.
+ * 群消息.
  *
  * @author ScienJus
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class DiscussMessage {
+public class GroupMessageModel {
 
-    private long discussId;
+    private long groupId;
 
     private long time;
 
@@ -20,23 +20,30 @@ public class DiscussMessage {
 
     private long userId;
 
-    private Font font;
+    private FontModel font;
 
-    public DiscussMessage(JSONObject json) {
-        JSONArray content = json.getJSONArray("content");
-        this.font = content.getJSONArray(0).getObject(1, Font.class);
-        this.content = content.getString(1);
+    public GroupMessageModel(JSONObject json) {
+        JSONArray cont = json.getJSONArray("content");
+        this.font = cont.getJSONArray(0).getObject(1, FontModel.class);
+
+        final int size = cont.size();
+        final StringBuilder contentBuilder = new StringBuilder();
+        for (int i = 1; i < size; i++) {
+            contentBuilder.append(cont.getString(i));
+        }
+        this.content = contentBuilder.toString();
+
         this.time = json.getLongValue("time");
-        this.discussId = json.getLongValue("did");
+        this.groupId = json.getLongValue("group_code");
         this.userId = json.getLongValue("send_uin");
     }
 
-    public long getDiscussId() {
-        return discussId;
+    public long getGroupId() {
+        return groupId;
     }
 
-    public void setDiscussId(long discussId) {
-        this.discussId = discussId;
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 
     public long getTime() {
@@ -63,11 +70,11 @@ public class DiscussMessage {
         this.userId = userId;
     }
 
-    public Font getFont() {
+    public FontModel getFont() {
         return font;
     }
 
-    public void setFont(Font font) {
+    public void setFont(FontModel font) {
         this.font = font;
     }
 

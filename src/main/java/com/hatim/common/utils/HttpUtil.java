@@ -1,8 +1,8 @@
 package com.hatim.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hatim.common.contents.Global;
-import com.hatim.common.smartqq.constant.ApiURL;
+import com.hatim.common.constant.Global;
+import com.hatim.common.constant.enu.ApiURL;
 import net.dongliu.requests.HeadOnlyRequestBuilder;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.Session;
@@ -62,6 +62,4 @@ public class HttpUtil {
         } while (times < Global.RETRY_TIMES && response.getStatusCode() != 200);
         return response;
     }
-
-
 }
