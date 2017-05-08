@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 /**
  * 字体.
@@ -7,12 +7,12 @@ package com.hatim.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class FontModel {
+public class FontBo {
 
-    public static final FontModel DEFAULT_FONT = defaultFont();
+    public static final FontBo DEFAULT_FONT = defaultFont();
 
-    private static FontModel defaultFont() {
-        FontModel font = new FontModel();
+    private static FontBo defaultFont() {
+        FontBo font = new FontBo();
         font.setColor("000000");
         font.setStyle(new int[]{0, 0, 0});
         font.setName("宋体");

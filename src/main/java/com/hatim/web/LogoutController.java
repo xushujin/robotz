@@ -1,6 +1,6 @@
 package com.hatim.web;
 
-import com.hatim.service.SmartQQService;
+import com.hatim.service.QQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/logout")
 public class LogoutController {
     @Autowired
-    SmartQQService smartQQService;
+    QQService smartQQService;
 
     @RequestMapping(value = "/qq", method = RequestMethod.GET)
     private String qqLogout(ModelMap map) {

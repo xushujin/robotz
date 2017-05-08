@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class GroupInfoModel {
+public class GroupInfoBo {
 
     private long gid;
 
@@ -24,9 +24,9 @@ public class GroupInfoModel {
 
     private String markname;
 
-    private List<GroupUserModel> users = new ArrayList<>();
+    private List<GroupUserBo> users = new ArrayList<>();
 
-    public void addUser(GroupUserModel user) {
+    public void addUser(GroupUserBo user) {
         this.users.add(user);
     }
 
@@ -78,11 +78,11 @@ public class GroupInfoModel {
         this.markname = markname;
     }
 
-    public List<GroupUserModel> getUsers() {
+    public List<GroupUserBo> getUsers() {
         return users;
     }
 
-    public void setUsers(List<GroupUserModel> users) {
+    public void setUsers(List<GroupUserBo> users) {
         this.users = users;
     }
 

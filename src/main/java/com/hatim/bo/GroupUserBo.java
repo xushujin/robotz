@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 /**
  * 群成员.
@@ -7,7 +7,7 @@ package com.hatim.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class GroupUserModel {
+public class GroupUserBo {
 
     private String nick;
 

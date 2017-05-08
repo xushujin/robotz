@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class GroupMessageModel {
+public class GroupMessageBo {
 
     private long groupId;
 
@@ -20,11 +20,11 @@ public class GroupMessageModel {
 
     private long userId;
 
-    private FontModel font;
+    private FontBo font;
 
-    public GroupMessageModel(JSONObject json) {
+    public GroupMessageBo(JSONObject json) {
         JSONArray cont = json.getJSONArray("content");
-        this.font = cont.getJSONArray(0).getObject(1, FontModel.class);
+        this.font = cont.getJSONArray(0).getObject(1, FontBo.class);
 
         final int size = cont.size();
         final StringBuilder contentBuilder = new StringBuilder();
@@ -70,11 +70,11 @@ public class GroupMessageModel {
         this.userId = userId;
     }
 
-    public FontModel getFont() {
+    public FontBo getFont() {
         return font;
     }
 
-    public void setFont(FontModel font) {
+    public void setFont(FontBo font) {
         this.font = font;
     }
 

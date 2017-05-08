@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hatim.common.constant.Global;
 import com.hatim.common.constant.enu.ApiURL;
-import com.hatim.model.*;
+import com.hatim.bo.*;
 import net.dongliu.requests.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,8 @@ public class QQInfoUtil {
      * @param msg 被查询的私聊消息
      * @return
      */
-    public static String getFriendNick(MessageModel msg) {
-        FriendModel user = Global.friendFromID.get(msg.getUserId());
+    public static String getFriendNick(MessageBo msg) {
+        FriendBo user = Global.friendFromID.get(msg.getUserId());
         if (user.getMarkname() == null || user.getMarkname().equals("")) {
             return user.getNickname(); //若发送者无备注则返回其昵称
         } else {
@@ -45,23 +45,23 @@ public class QQInfoUtil {
      * @param groupCode 群编号
      * @return
      */
-    public static GroupInfoModel getGroupInfo(long groupCode) {
+    public static GroupInfoBo getGroupInfo(long groupCode) {
 
         Response<String> response = HttpUtil.get(ApiURL.GET_GROUP_INFO, Global.session, groupCode, Global.vfwebqq);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
-        GroupInfoModel groupInfo = result.getObject("ginfo", GroupInfoModel.class);
+        GroupInfoBo groupInfo = result.getObject("ginfo", GroupInfoBo.class);
         //获得群成员信息
-        Map<Long, GroupUserModel> groupUserMap = new HashMap<>();
+        Map<Long, GroupUserBo> groupUserMap = new HashMap<>();
         JSONArray minfo = result.getJSONArray("minfo");
         for (int i = 0; minfo != null && i < minfo.size(); i++) {
-            GroupUserModel groupUser = minfo.getObject(i, GroupUserModel.class);
+            GroupUserBo groupUser = minfo.getObject(i, GroupUserBo.class);
             groupUserMap.put(groupUser.getUin(), groupUser);
             groupInfo.addUser(groupUser);
         }
         JSONArray stats = result.getJSONArray("stats");
         for (int i = 0; stats != null && i < stats.size(); i++) {
             JSONObject item = stats.getJSONObject(i);
-            GroupUserModel groupUser = groupUserMap.get(item.getLongValue("uin"));
+            GroupUserBo groupUser = groupUserMap.get(item.getLongValue("uin"));
             groupUser.setClientType(item.getIntValue("client_type"));
             groupUser.setStatus(item.getIntValue("stat"));
         }
@@ -73,7 +73,7 @@ public class QQInfoUtil {
         JSONArray vipinfo = result.getJSONArray("vipinfo");
         for (int i = 0; vipinfo != null && i < vipinfo.size(); i++) {
             JSONObject item = vipinfo.getJSONObject(i);
-            GroupUserModel groupUser = groupUserMap.get(item.getLongValue("u"));
+            GroupUserBo groupUser = groupUserMap.get(item.getLongValue("u"));
             groupUser.setVip(item.getIntValue("is_vip") == 1);
             groupUser.setVipLevel(item.getIntValue("vip_level"));
         }
@@ -86,7 +86,7 @@ public class QQInfoUtil {
      * @param id 被查询的群id
      * @return
      */
-    public static GroupInfoModel getGroupInfoFromID(Long id) {
+    public static GroupInfoBo getGroupInfoFromID(Long id) {
         if (!Global.groupInfoFromID.containsKey(id)) {
             Global.groupInfoFromID.put(id, getGroupInfo(Global.groupFromID.get(id).getCode()));
         }
@@ -99,8 +99,8 @@ public class QQInfoUtil {
      * @param msg 被查询的群消息
      * @return
      */
-    public static String getGroupUserNick(GroupMessageModel msg) {
-        for (GroupUserModel user : getGroupInfoFromID(msg.getGroupId()).getUsers()) {
+    public static String getGroupUserNick(GroupMessageBo msg) {
+        for (GroupUserBo user : getGroupInfoFromID(msg.getGroupId()).getUsers()) {
             if (user.getUin() == msg.getUserId()) {
                 if (user.getCard() == null || user.getCard().equals("")) {
                     return user.getNick(); //若发送者无群名片则返回其昵称
@@ -119,23 +119,23 @@ public class QQInfoUtil {
      * @param discussId 讨论组id
      * @return
      */
-    public static DiscussInfoModel getDiscussInfo(long discussId) {
+    public static DiscussInfoBo getDiscussInfo(long discussId) {
 
         Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_INFO, Global.session, discussId, Global.vfwebqq, Global.psessionid);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
-        DiscussInfoModel discussInfo = result.getObject("info", DiscussInfoModel.class);
+        DiscussInfoBo discussInfo = result.getObject("info", DiscussInfoBo.class);
         //获得讨论组成员信息
-        Map<Long, DiscussUserModel> discussUserMap = new HashMap<>();
+        Map<Long, DiscussUserBo> discussUserMap = new HashMap<>();
         JSONArray minfo = result.getJSONArray("mem_info");
         for (int i = 0; minfo != null && i < minfo.size(); i++) {
-            DiscussUserModel discussUser = minfo.getObject(i, DiscussUserModel.class);
+            DiscussUserBo discussUser = minfo.getObject(i, DiscussUserBo.class);
             discussUserMap.put(discussUser.getUin(), discussUser);
             discussInfo.addUser(discussUser);
         }
         JSONArray stats = result.getJSONArray("mem_status");
         for (int i = 0; stats != null && i < stats.size(); i++) {
             JSONObject item = stats.getJSONObject(i);
-            DiscussUserModel discussUser = discussUserMap.get(item.getLongValue("uin"));
+            DiscussUserBo discussUser = discussUserMap.get(item.getLongValue("uin"));
             discussUser.setClientType(item.getIntValue("client_type"));
             discussUser.setStatus(item.getString("status"));
         }
@@ -148,7 +148,7 @@ public class QQInfoUtil {
      * @param id 被查询的讨论组id
      * @return
      */
-    public static DiscussInfoModel getDiscussInfoFromID(Long id) {
+    public static DiscussInfoBo getDiscussInfoFromID(Long id) {
         if (!Global.discussInfoFromID.containsKey(id)) {
             Global.discussInfoFromID.put(id, getDiscussInfo(Global.discussFromID.get(id).getId()));
         }
@@ -161,8 +161,8 @@ public class QQInfoUtil {
      * @param msg 被查询的讨论组消息
      * @return
      */
-    public static String getDiscussUserNick(DiscussMessageModel msg) {
-        for (DiscussUserModel user : getDiscussInfoFromID(msg.getDiscussId()).getUsers()) {
+    public static String getDiscussUserNick(DiscussMessageBo msg) {
+        for (DiscussUserBo user : getDiscussInfoFromID(msg.getDiscussId()).getUsers()) {
             if (user.getUin() == msg.getUserId()) {
                 return user.getNick(); //返回发送者昵称
             }
@@ -176,7 +176,7 @@ public class QQInfoUtil {
      *
      * @return
      */
-    public static List<FriendModel> getFriendList() {
+    public static List<FriendBo> getFriendList() {
 
         JSONObject r = new JSONObject();
         r.put("vfwebqq", Global.vfwebqq);
@@ -192,7 +192,7 @@ public class QQInfoUtil {
      * @param msg 被查询的讨论组消息
      * @return
      */
-    public static String getDiscussName(DiscussMessageModel msg) {
+    public static String getDiscussName(DiscussMessageBo msg) {
         return getDiscuss(msg).getName();
     }
 
@@ -202,7 +202,7 @@ public class QQInfoUtil {
      * @param msg 被查询的讨论组消息
      * @return
      */
-    public static DiscussModel getDiscuss(DiscussMessageModel msg) {
+    public static DiscussBo getDiscuss(DiscussMessageBo msg) {
         return Global.discussFromID.get(msg.getDiscussId());
     }
 
@@ -212,7 +212,7 @@ public class QQInfoUtil {
      * @param msg 被查询的群消息
      * @return
      */
-    public static String getGroupName(GroupMessageModel msg) {
+    public static String getGroupName(GroupMessageBo msg) {
         return getGroup(msg).getName();
     }
 
@@ -222,7 +222,7 @@ public class QQInfoUtil {
      * @param msg 被查询的群消息
      * @return
      */
-    public static GroupModel getGroup(GroupMessageModel msg) {
+    public static GroupBo getGroup(GroupMessageBo msg) {
         return Global.groupFromID.get(msg.getGroupId());
     }
 
@@ -232,12 +232,12 @@ public class QQInfoUtil {
      * @param result
      * @return
      */
-    public static Map<Long, FriendModel> parseFriendMap(JSONObject result) {
-        Map<Long, FriendModel> friendMap = new HashMap<>();
+    public static Map<Long, FriendBo> parseFriendMap(JSONObject result) {
+        Map<Long, FriendBo> friendMap = new HashMap<>();
         JSONArray info = result.getJSONArray("info");
         for (int i = 0; info != null && i < info.size(); i++) {
             JSONObject item = info.getJSONObject(i);
-            FriendModel friend = new FriendModel();
+            FriendBo friend = new FriendBo();
             friend.setUserId(item.getLongValue("uin"));
             friend.setNickname(item.getString("nick"));
             friendMap.put(friend.getUserId(), friend);
@@ -250,7 +250,7 @@ public class QQInfoUtil {
         JSONArray vipinfo = result.getJSONArray("vipinfo");
         for (int i = 0; vipinfo != null && i < vipinfo.size(); i++) {
             JSONObject item = vipinfo.getJSONObject(i);
-            FriendModel friend = friendMap.get(item.getLongValue("u"));
+            FriendBo friend = friendMap.get(item.getLongValue("u"));
             friend.setVip(item.getIntValue("is_vip") == 1);
             friend.setVipLevel(item.getIntValue("vip_level"));
         }
@@ -262,10 +262,10 @@ public class QQInfoUtil {
      *
      * @return
      */
-    public static List<FriendStatusModel> getFriendStatus() {
+    public static List<FriendStatusBo> getFriendStatus() {
 
         Response<String> response = HttpUtil.get(ApiURL.GET_FRIEND_STATUS, Global.session, Global.vfwebqq, Global.psessionid);
-        return JSON.parseArray(QQMsgUtil.getJsonArrayResult(response).toJSONString(), FriendStatusModel.class);
+        return JSON.parseArray(QQMsgUtil.getJsonArrayResult(response).toJSONString(), FriendStatusBo.class);
     }
 
     /**
@@ -273,10 +273,10 @@ public class QQInfoUtil {
      *
      * @return
      */
-    public static UserInfoModel getAccountInfo() {
+    public static UserInfoBo getAccountInfo() {
 
         Response<String> response = HttpUtil.get(ApiURL.GET_ACCOUNT_INFO, Global.session);
-        return JSON.parseObject(QQMsgUtil.getJsonObjectResult(response).toJSONString(), UserInfoModel.class);
+        return JSON.parseObject(QQMsgUtil.getJsonObjectResult(response).toJSONString(), UserInfoBo.class);
     }
 
     /**
@@ -284,10 +284,10 @@ public class QQInfoUtil {
      *
      * @return
      */
-    public static List<DiscussModel> getDiscussList() {
+    public static List<DiscussBo> getDiscussList() {
 
         Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_LIST, Global.session, Global.psessionid, Global.vfwebqq);
-        return JSON.parseArray(QQMsgUtil.getJsonObjectResult(response).getJSONArray("dnamelist").toJSONString(), DiscussModel.class);
+        return JSON.parseArray(QQMsgUtil.getJsonObjectResult(response).getJSONArray("dnamelist").toJSONString(), DiscussBo.class);
     }
 
     /**
@@ -295,7 +295,7 @@ public class QQInfoUtil {
      *
      * @return
      */
-    public static List<GroupModel> getGroupList() {
+    public static List<GroupBo> getGroupList() {
 
         JSONObject r = new JSONObject();
         r.put("vfwebqq", Global.vfwebqq);
@@ -303,7 +303,7 @@ public class QQInfoUtil {
 
         Response<String> response = HttpUtil.post(ApiURL.GET_GROUP_LIST, r, Global.session);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
-        return JSON.parseArray(result.getJSONArray("gnamelist").toJSONString(), GroupModel.class);
+        return JSON.parseArray(result.getJSONArray("gnamelist").toJSONString(), GroupBo.class);
     }
 
     /**
@@ -319,15 +319,15 @@ public class QQInfoUtil {
             // 获取讨论组列表
             Global.discussList = QQInfoUtil.getDiscussList();
             // 建立好友id到好友映射
-            for (FriendModel friend : Global.friendList) {
+            for (FriendBo friend : Global.friendList) {
                 Global.friendFromID.put(friend.getUserId(), friend);
             }
             // 建立群id到群映射
-            for (GroupModel group : Global.groupList) {
+            for (GroupBo group : Global.groupList) {
                 Global.groupFromID.put(group.getId(), group);
             }
             // 建立讨论组id到讨论组映射
-            for (DiscussModel discuss : Global.discussList) {
+            for (DiscussBo discuss : Global.discussList) {
                 Global.discussFromID.put(discuss.getId(), discuss);
             }
 

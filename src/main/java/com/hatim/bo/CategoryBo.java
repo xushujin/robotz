@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 15/12/19.
  */
-public class CategoryModel {
+public class CategoryBo {
 
     private int index;
 
@@ -18,15 +18,15 @@ public class CategoryModel {
 
     private String name;
 
-    private List<FriendModel> friends = new ArrayList<>();
+    private List<FriendBo> friends = new ArrayList<>();
 
-    public void addFriend(FriendModel friend) {
+    public void addFriend(FriendBo friend) {
         this.friends.add(friend);
     }
 
     @Override
     public String toString() {
-        return "CategoryModel{"
+        return "CategoryBo{"
                 + "index=" + index
                 + ", sort=" + sort
                 + ", name='" + name + '\''
@@ -34,8 +34,8 @@ public class CategoryModel {
                 + '}';
     }
 
-    public static CategoryModel defaultCategory() {
-        CategoryModel category = new CategoryModel();
+    public static CategoryBo defaultCategory() {
+        CategoryBo category = new CategoryBo();
         category.setIndex(0);
         category.setSort(0);
         category.setName("我的好友");
@@ -66,11 +66,11 @@ public class CategoryModel {
         this.name = name;
     }
 
-    public List<FriendModel> getFriends() {
+    public List<FriendBo> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<FriendModel> friends) {
+    public void setFriends(List<FriendBo> friends) {
         this.friends = friends;
     }
 

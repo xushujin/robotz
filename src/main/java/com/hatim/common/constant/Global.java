@@ -1,6 +1,6 @@
 package com.hatim.common.constant;
 
-import com.hatim.model.*;
+import com.hatim.bo.*;
 import net.dongliu.requests.Client;
 import net.dongliu.requests.Session;
 
@@ -37,23 +37,20 @@ public class Global {
     public static long uin;
     public static String psessionid;
 
-    // 关键字
-    public static final String CONTAINS_KEY = "黑子";
-
     // 好友列表
-    public static List<FriendModel> friendList = new ArrayList<>();
+    public static List<FriendBo> friendList = new ArrayList<>();
     // 群列表
-    public static List<GroupModel> groupList = new ArrayList<>();
+    public static List<GroupBo> groupList = new ArrayList<>();
     // 讨论组列表
-    public static List<DiscussModel> discussList = new ArrayList<>();
+    public static List<DiscussBo> discussList = new ArrayList<>();
     // 好友id到好友映射
-    public static Map<Long, FriendModel> friendFromID = new HashMap<>();
+    public static Map<Long, FriendBo> friendFromID = new HashMap<>();
     // 群id到群映射
-    public static Map<Long, GroupModel> groupFromID = new HashMap<>();
+    public static Map<Long, GroupBo> groupFromID = new HashMap<>();
     // 群id到群详情映射
-    public static Map<Long, GroupInfoModel> groupInfoFromID = new HashMap<>();
+    public static Map<Long, GroupInfoBo> groupInfoFromID = new HashMap<>();
     // 讨论组id到讨论组映射
-    public static Map<Long, DiscussModel> discussFromID = new HashMap<>();
+    public static Map<Long, DiscussBo> discussFromID = new HashMap<>();
     // 讨论组id到讨论组详情映射
-    public static Map<Long, DiscussInfoModel> discussInfoFromID = new HashMap<>();
+    public static Map<Long, DiscussInfoBo> discussInfoFromID = new HashMap<>();
 }

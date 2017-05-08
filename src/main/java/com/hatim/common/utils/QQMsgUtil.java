@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hatim.common.constant.Global;
 import com.hatim.common.constant.enu.ApiURL;
-import com.hatim.model.DiscussMessageModel;
-import com.hatim.model.FontModel;
-import com.hatim.model.GroupMessageModel;
-import com.hatim.model.MessageModel;
+import com.hatim.bo.DiscussMessageBo;
+import com.hatim.bo.FontBo;
+import com.hatim.bo.GroupMessageBo;
+import com.hatim.bo.MessageBo;
 import com.hatim.service.QQMessageService;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.exception.RequestException;
@@ -33,7 +33,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("group_uin", groupId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontBo.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -53,7 +53,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("did", discussId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontBo.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -73,7 +73,7 @@ public class QQMsgUtil {
 
         JSONObject r = new JSONObject();
         r.put("to", friendId);
-        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontModel.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
+        r.put("content", JSON.toJSONString(Arrays.asList(msg, Arrays.asList("font", FontBo.DEFAULT_FONT))));  //注意这里虽然格式是Json，但是实际是String
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
@@ -102,11 +102,11 @@ public class QQMsgUtil {
             JSONObject message = array.getJSONObject(i);
             String type = message.getString("poll_type");
             if ("message".equals(type)) {
-                callback.onMessage(new MessageModel(message.getJSONObject("value")));
+                callback.onMessage(new MessageBo(message.getJSONObject("value")));
             } else if ("group_message".equals(type)) {
-                callback.onGroupMessage(new GroupMessageModel(message.getJSONObject("value")));
+                callback.onGroupMessage(new GroupMessageBo(message.getJSONObject("value")));
             } else if ("discu_message".equals(type)) {
-                callback.onDiscussMessage(new DiscussMessageModel(message.getJSONObject("value")));
+                callback.onDiscussMessage(new DiscussMessageBo(message.getJSONObject("value")));
             }
         }
     }

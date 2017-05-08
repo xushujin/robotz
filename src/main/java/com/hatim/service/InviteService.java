@@ -7,20 +7,20 @@ package com.hatim.service;
 public interface InviteService {
 
     /**
-     * 邀请人数
+     * 邀请记录
      *
-     * @param userId 用户ID
+     * @param account 用户账号
      * @return
      */
-    int inviteCount(String userId);
+    int invite(String account);
 
 
     /**
-     * 退群人数
+     * 退群处理
      *
-     * @param userId
+     * @param account 用户账号
      * @return
      */
-    int quitCount(String userId);
+    int quit(String account);
 
 }

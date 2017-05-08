@@ -4,30 +4,29 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 日志
- * Created by Hatim on 2017/4/28.
+ * 订单绑定信息
+ * Created by Hatim on 2017/5/6.
  */
-@Document(collection = "t_logs")
-public class Log implements Serializable {
+@Document(collection = "t_order")
+public class Order {
     @Id
     private ObjectId id;
-    // 会员账号（唯一）
+    // 会员账号
     private String account;
-    // 发送的消息
-    private String msg;
+    // 订单号
+    private String orderNo;
     // 创建时间
     private Date createDate;
 
     @Override
     public String toString() {
-        return "Log{" +
+        return "Order{" +
                 "id=" + id +
                 ", account='" + account + '\'' +
-                ", msg='" + msg + '\'' +
+                ", orderNo='" + orderNo + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -48,12 +47,12 @@ public class Log implements Serializable {
         this.account = account;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     public Date getCreateDate() {

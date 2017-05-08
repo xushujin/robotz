@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -9,9 +9,9 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class UserInfoModel {
+public class UserInfoBo {
 
-    private BirthdayModel birthday;
+    private BirthdayBo birthday;
 
     private String phone;
 
@@ -50,11 +50,11 @@ public class UserInfoModel {
 
     private String mobile;
 
-    public BirthdayModel getBirthday() {
+    public BirthdayBo getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(BirthdayModel birthday) {
+    public void setBirthday(BirthdayBo birthday) {
         this.birthday = birthday;
     }
 

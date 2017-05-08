@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -9,7 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class FriendStatusModel {
+public class FriendStatusBo {
 
     private long uin;
 

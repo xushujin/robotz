@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 /**
  * 好友.
@@ -7,7 +7,7 @@ package com.hatim.model;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/18.
  */
-public class FriendModel {
+public class FriendBo {
 
     private long userId;
 
@@ -21,7 +21,7 @@ public class FriendModel {
 
     @Override
     public String toString() {
-        return "FriendModel{"
+        return "FriendBo{"
                 + "userId=" + userId
                 + ", markname='" + markname + '\''
                 + ", nickname='" + nickname + '\''

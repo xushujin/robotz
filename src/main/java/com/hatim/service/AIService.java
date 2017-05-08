@@ -1,5 +1,7 @@
 package com.hatim.service;
 
+import com.hatim.common.constant.enu.ReplyType;
+
 /**
  * 傻逼AI
  * Created by Hatim on 2017/4/24.
@@ -12,7 +14,7 @@ public interface AIService {
      * @param msg 用户发送的消息
      * @return
      */
-    boolean msgMatching(String msg);
+    ReplyType msgMatching(String msg);
 
     /**
      * 转链服务
@@ -21,6 +23,14 @@ public interface AIService {
      * @return
      */
     String transferChain(String msg);
+
+    /**
+     * 查找商品服务
+     *
+     * @param msg
+     * @return
+     */
+    String findGoods(String msg);
 
     /**
      * 图灵机器人

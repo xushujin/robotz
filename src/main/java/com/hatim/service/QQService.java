@@ -4,7 +4,7 @@ package com.hatim.service;
  * qq机器人
  * Created by Hatim on 2017/4/22.
  */
-public interface SmartQQService {
+public interface QQService {
     /**
      * 开启服务
      *

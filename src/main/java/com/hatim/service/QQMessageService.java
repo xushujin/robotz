@@ -1,9 +1,9 @@
 package com.hatim.service;
 
 
-import com.hatim.model.DiscussMessageModel;
-import com.hatim.model.GroupMessageModel;
-import com.hatim.model.MessageModel;
+import com.hatim.bo.DiscussMessageBo;
+import com.hatim.bo.GroupMessageBo;
+import com.hatim.bo.MessageBo;
 
 /**
  * 收到QQ消息的回调
@@ -16,19 +16,19 @@ public interface QQMessageService {
      *
      * @param message
      */
-    void onMessage(MessageModel message);
+    void onMessage(MessageBo message);
 
     /**
      * 收到群消息后的回调
      *
      * @param message
      */
-    void onGroupMessage(GroupMessageModel message);
+    void onGroupMessage(GroupMessageBo message);
 
     /**
      * 收到讨论组消息后的回调
      *
      * @param message
      */
-    void onDiscussMessage(DiscussMessageModel message);
+    void onDiscussMessage(DiscussMessageBo message);
 }

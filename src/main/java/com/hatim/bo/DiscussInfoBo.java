@@ -1,4 +1,4 @@
-package com.hatim.model;
+package com.hatim.bo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @date 2015/12/24.
  */
-public class DiscussInfoModel {
+public class DiscussInfoBo {
 
     @JSONField(name = "did")
     private long id;
@@ -20,9 +20,9 @@ public class DiscussInfoModel {
     @JSONField(name = "discu_name")
     private String name;
 
-    private List<DiscussUserModel> users = new ArrayList<>();
+    private List<DiscussUserBo> users = new ArrayList<>();
 
-    public void addUser(DiscussUserModel user) {
+    public void addUser(DiscussUserBo user) {
         this.users.add(user);
     }
 
@@ -42,11 +42,11 @@ public class DiscussInfoModel {
         this.name = name;
     }
 
-    public List<DiscussUserModel> getUsers() {
+    public List<DiscussUserBo> getUsers() {
         return users;
     }
 
-    public void setUsers(List<DiscussUserModel> users) {
+    public void setUsers(List<DiscussUserBo> users) {
         this.users = users;
     }
 

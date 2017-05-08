@@ -1,14 +1,16 @@
 package com.hatim.service.impl;
 
+import com.hatim.bo.UserInfoBo;
 import com.hatim.common.constant.Global;
 import com.hatim.common.constant.enu.ApiURL;
 import com.hatim.common.utils.*;
-import com.hatim.model.UserInfoModel;
-import com.hatim.service.SmartQQService;
+import com.hatim.service.QQMessageService;
+import com.hatim.service.QQService;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.exception.RequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +22,13 @@ import static java.lang.Thread.sleep;
  * Created by Hatim on 2017/4/22.
  */
 @Service
-public class SmartQQServiceImpl implements SmartQQService {
+public class QQServiceImpl implements QQService {
 
     //日志
-    private static final Logger logger = LoggerFactory.getLogger(SmartQQServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(QQServiceImpl.class);
+
+    @Autowired
+    QQMessageService qqMessageService;
 
     /**
      * 开启服务
@@ -63,7 +68,7 @@ public class SmartQQServiceImpl implements SmartQQService {
                         // 获取朋友列表
                         QQInfoUtil.getFriendStatus(); //修复Api返回码[103]的问题
                         // 登录成功欢迎语
-                        UserInfoModel userInfo = QQInfoUtil.getAccountInfo();
+                        UserInfoBo userInfo = QQInfoUtil.getAccountInfo();
                         logger.info(userInfo.getNick() + "，登录成功！");
 
                         // 创建客户端监听及处理消息
@@ -100,7 +105,7 @@ public class SmartQQServiceImpl implements SmartQQService {
             public void run() {
                 while (true) {
                     try {
-                        QQMsgUtil.pollMessage(new QQMessageServiceImpl());
+                        QQMsgUtil.pollMessage(qqMessageService);
                     } catch (RequestException e) {
                         //忽略SocketTimeoutException
                         if (!(e.getCause() instanceof SocketTimeoutException)) {
