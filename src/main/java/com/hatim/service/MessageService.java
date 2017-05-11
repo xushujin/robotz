@@ -6,10 +6,10 @@ import com.hatim.bo.GroupMessageBo;
 import com.hatim.bo.MessageBo;
 
 /**
- * 收到QQ消息的回调
+ * 收到消息后的回调
  * Created by Hatim on 2017/4/28.
  */
-public interface QQMessageService {
+public interface MessageService {
 
     /**
      * 收到私聊消息后的回调

@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head lang="en">
 <meta charset="UTF-8" />
-<title th:text="${title}">Hello World</title>
+<title th:text="${myTitle}">Hello World</title>
 </head>
 <body>
     <h1>Hello World</h1>
-    <h5 th:text="${imgPath}">xxxx</h5>
-    <img th:src="@{/images/qrcode.png}"></img>
+    <a href="download">下载</a>
+    <img th:src="@{D:\tmp\qrcode.png}"></img>
+    <!--<img th:src="@{${imgPath}}"></img>-->
+    <!--<img th:src="${urls.getForLookupPath('/image/qrcode.png')}"></img>-->
 </body>
 </html>

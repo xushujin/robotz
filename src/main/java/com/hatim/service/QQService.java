@@ -18,4 +18,9 @@ public interface QQService {
      * @return
      */
     boolean stopService();
+
+    /**
+     * 比如刷新好友列表
+     */
+    void refresh();
 }

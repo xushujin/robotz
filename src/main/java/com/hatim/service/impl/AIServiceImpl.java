@@ -1,6 +1,9 @@
 package com.hatim.service.impl;
 
-import com.hatim.common.constant.Keys;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hatim.bo.SendMsgBo;
+import com.hatim.bo.TuringBo;
+import com.hatim.common.constant.Global;
 import com.hatim.common.constant.enu.ReplyType;
 import com.hatim.service.AIService;
 import org.slf4j.Logger;
@@ -10,7 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 /**
  * Created by Hatim on 2017/4/24.
@@ -27,6 +33,18 @@ public class AIServiceImpl implements AIService {
     @Value("${itpk.secret}")
     private String ITPK_SECRET;
 
+    @Value("${turing.api}")
+    private String TURING_API;
+    @Value("${turing.key}")
+    private String TURING_KEY;
+
+    @Value("${msg.key.chat}")
+    private String msg_key_chat;
+    @Value("${msg.key.transferChain}")
+    private String msg_key_transferChain;
+    @Value("${msg.key.findGoods}")
+    private String msg_key_findGoods;
+
     @Autowired
     RestTemplate restTemplate;
 
@@ -36,28 +54,30 @@ public class AIServiceImpl implements AIService {
         return builder.build();
     }
 
-
     /**
-     * 消息匹配
+     * 消息匹配，并回复处理
      *
      * @param msg 用户发送的消息
      * @return
      */
     @Override
-    public ReplyType msgMatching(String msg) {
-        if (msg.contains(Keys.CHAT)) {
+    public SendMsgBo msgMatching(String msg) {
+        if (msg.startsWith(msg_key_chat)) {
             // 唠嗑
-            return ReplyType.ITPK_AI;
+            return new SendMsgBo().setReplyType(ReplyType.TURING_AI)
+                    .setMsg(this.talkToTuring(msg.replaceFirst(msg_key_chat, Global.BLANK_STR).trim()));
         }
-        if (msg.contains(Keys.FIND_GOODS)) {
+        if (msg.startsWith(msg_key_findGoods)) {
             // 查找商品
-            return ReplyType.FIND_GOODS;
+            return new SendMsgBo().setReplyType(ReplyType.FIND_GOODS)
+                    .setMsg(this.findGoods(msg.replaceFirst(msg_key_findGoods, Global.BLANK_STR).trim()));
         }
-        if (msg.contains(Keys.TRANSFER_CHAIN)) {
+        if (msg.startsWith(msg_key_transferChain)) {
             // 转链
-            return ReplyType.TRANSFER_CHAIN;
+            return new SendMsgBo().setReplyType(ReplyType.TRANSFER_CHAIN)
+                    .setMsg(this.transferChain(msg.replaceFirst(msg_key_transferChain, Global.BLANK_STR).trim()));
         }
-        return ReplyType.BAIDU_AI;
+        return null;
     }
 
     /**
@@ -90,6 +110,23 @@ public class AIServiceImpl implements AIService {
      */
     @Override
     public String talkToTuring(String msg) {
+        String[] array = msg.split(msg_key_chat);
+        if (array.length > 1) {
+            msg = array[1].trim();
+        }
+        String url = TURING_API + "?key=" + TURING_KEY + "&userid=123&info=" + msg;
+        String str = restTemplate.getForObject(url, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        TuringBo bo = null;
+        try {
+            bo = mapper.readValue(str, TuringBo.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (bo != null && !StringUtils.isEmpty(bo.getText())) {
+            return bo.getText();
+        }
         return null;
     }
 
@@ -112,13 +149,13 @@ public class AIServiceImpl implements AIService {
      */
     @Override
     public String talkToItpk(String msg) {
-        String[] array = msg.split(Keys.CHAT);
+        String[] array = msg.split(msg_key_chat);
         if (array.length > 1) {
             msg = array[1].trim();
         }
         String url = ITPK_API + "?api_key=" + ITPK_KEY + "&limit=8&api_secret=" + ITPK_SECRET + "&question=" + msg;
-        String s = restTemplate.getForObject(url, String.class);
-        return s;
+        String text = restTemplate.getForObject(url, String.class);
+        return StringUtils.isEmpty(text) ? null : text;
     }
 
 }

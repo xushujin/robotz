@@ -3,13 +3,14 @@ package com.hatim.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hatim.common.constant.Global;
-import com.hatim.common.constant.enu.ApiURL;
 import com.hatim.bo.DiscussMessageBo;
 import com.hatim.bo.FontBo;
 import com.hatim.bo.GroupMessageBo;
 import com.hatim.bo.MessageBo;
-import com.hatim.service.QQMessageService;
+import com.hatim.common.constant.Global;
+import com.hatim.common.constant.Status;
+import com.hatim.common.constant.enu.ApiURL;
+import com.hatim.service.MessageService;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.exception.RequestException;
 import org.slf4j.Logger;
@@ -37,9 +38,9 @@ public class QQMsgUtil {
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
-        r.put("psessionid", Global.psessionid);
+        r.put("psessionid", Status.psessionid);
 
-        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_GROUP, r, Global.session);
+        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_GROUP, r, Status.session);
         checkSendMsgResult(response);
     }
 
@@ -57,9 +58,9 @@ public class QQMsgUtil {
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
-        r.put("psessionid", Global.psessionid);
+        r.put("psessionid", Status.psessionid);
 
-        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_DISCUSS, r, Global.session);
+        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_DISCUSS, r, Status.session);
         checkSendMsgResult(response);
     }
 
@@ -77,9 +78,9 @@ public class QQMsgUtil {
         r.put("face", 573);
         r.put("clientid", Global.Client_ID);
         r.put("msg_id", Global.MESSAGE_ID++);
-        r.put("psessionid", Global.psessionid);
+        r.put("psessionid", Status.psessionid);
 
-        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_FRIEND, r, Global.session);
+        Response<String> response = HttpUtil.postWithRetry(ApiURL.SEND_MESSAGE_TO_FRIEND, r, Status.session);
         checkSendMsgResult(response);
     }
 
@@ -88,15 +89,15 @@ public class QQMsgUtil {
      *
      * @param callback 获取消息后的回调
      */
-    public static void pollMessage(QQMessageService callback) {
+    public static void pollMessage(MessageService callback) {
 
         JSONObject r = new JSONObject();
-        r.put("ptwebqq", Global.ptwebqq);
+        r.put("ptwebqq", Status.ptwebqq);
         r.put("clientid", Global.Client_ID);
-        r.put("psessionid", Global.psessionid);
+        r.put("psessionid", Status.psessionid);
         r.put("key", "");
 
-        Response<String> response = HttpUtil.post(ApiURL.POLL_MESSAGE, r, Global.session);
+        Response<String> response = HttpUtil.post(ApiURL.POLL_MESSAGE, r, Status.session);
         JSONArray array = getJsonArrayResult(response);
         for (int i = 0; array != null && i < array.size(); i++) {
             JSONObject message = array.getJSONObject(i);

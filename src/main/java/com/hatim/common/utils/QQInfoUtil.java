@@ -3,9 +3,9 @@ package com.hatim.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hatim.common.constant.Global;
-import com.hatim.common.constant.enu.ApiURL;
 import com.hatim.bo.*;
+import com.hatim.common.constant.Status;
+import com.hatim.common.constant.enu.ApiURL;
 import net.dongliu.requests.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class QQInfoUtil {
      * @return
      */
     public static String getFriendNick(MessageBo msg) {
-        FriendBo user = Global.friendFromID.get(msg.getUserId());
+        FriendBo user = Status.friendFromID.get(msg.getUserId());
         if (user.getMarkname() == null || user.getMarkname().equals("")) {
             return user.getNickname(); //若发送者无备注则返回其昵称
         } else {
@@ -47,7 +47,7 @@ public class QQInfoUtil {
      */
     public static GroupInfoBo getGroupInfo(long groupCode) {
 
-        Response<String> response = HttpUtil.get(ApiURL.GET_GROUP_INFO, Global.session, groupCode, Global.vfwebqq);
+        Response<String> response = HttpUtil.get(ApiURL.GET_GROUP_INFO, Status.session, groupCode, Status.vfwebqq);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
         GroupInfoBo groupInfo = result.getObject("ginfo", GroupInfoBo.class);
         //获得群成员信息
@@ -87,10 +87,10 @@ public class QQInfoUtil {
      * @return
      */
     public static GroupInfoBo getGroupInfoFromID(Long id) {
-        if (!Global.groupInfoFromID.containsKey(id)) {
-            Global.groupInfoFromID.put(id, getGroupInfo(Global.groupFromID.get(id).getCode()));
+        if (!Status.groupInfoFromID.containsKey(id)) {
+            Status.groupInfoFromID.put(id, getGroupInfo(Status.groupFromID.get(id).getCode()));
         }
-        return Global.groupInfoFromID.get(id);
+        return Status.groupInfoFromID.get(id);
     }
 
     /**
@@ -121,7 +121,7 @@ public class QQInfoUtil {
      */
     public static DiscussInfoBo getDiscussInfo(long discussId) {
 
-        Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_INFO, Global.session, discussId, Global.vfwebqq, Global.psessionid);
+        Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_INFO, Status.session, discussId, Status.vfwebqq, Status.psessionid);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
         DiscussInfoBo discussInfo = result.getObject("info", DiscussInfoBo.class);
         //获得讨论组成员信息
@@ -149,10 +149,10 @@ public class QQInfoUtil {
      * @return
      */
     public static DiscussInfoBo getDiscussInfoFromID(Long id) {
-        if (!Global.discussInfoFromID.containsKey(id)) {
-            Global.discussInfoFromID.put(id, getDiscussInfo(Global.discussFromID.get(id).getId()));
+        if (!Status.discussInfoFromID.containsKey(id)) {
+            Status.discussInfoFromID.put(id, getDiscussInfo(Status.discussFromID.get(id).getId()));
         }
-        return Global.discussInfoFromID.get(id);
+        return Status.discussInfoFromID.get(id);
     }
 
     /**
@@ -179,10 +179,10 @@ public class QQInfoUtil {
     public static List<FriendBo> getFriendList() {
 
         JSONObject r = new JSONObject();
-        r.put("vfwebqq", Global.vfwebqq);
-        r.put("hash", EncryptUtil.hash(Global.uin, Global.ptwebqq));
+        r.put("vfwebqq", Status.vfwebqq);
+        r.put("hash", EncryptUtil.hash(Status.uin, Status.ptwebqq));
 
-        Response<String> response = HttpUtil.post(ApiURL.GET_FRIEND_LIST, r, Global.session);
+        Response<String> response = HttpUtil.post(ApiURL.GET_FRIEND_LIST, r, Status.session);
         return new ArrayList<>(parseFriendMap(QQMsgUtil.getJsonObjectResult(response)).values());
     }
 
@@ -203,7 +203,7 @@ public class QQInfoUtil {
      * @return
      */
     public static DiscussBo getDiscuss(DiscussMessageBo msg) {
-        return Global.discussFromID.get(msg.getDiscussId());
+        return Status.discussFromID.get(msg.getDiscussId());
     }
 
     /**
@@ -223,7 +223,7 @@ public class QQInfoUtil {
      * @return
      */
     public static GroupBo getGroup(GroupMessageBo msg) {
-        return Global.groupFromID.get(msg.getGroupId());
+        return Status.groupFromID.get(msg.getGroupId());
     }
 
     /**
@@ -264,7 +264,7 @@ public class QQInfoUtil {
      */
     public static List<FriendStatusBo> getFriendStatus() {
 
-        Response<String> response = HttpUtil.get(ApiURL.GET_FRIEND_STATUS, Global.session, Global.vfwebqq, Global.psessionid);
+        Response<String> response = HttpUtil.get(ApiURL.GET_FRIEND_STATUS, Status.session, Status.vfwebqq, Status.psessionid);
         return JSON.parseArray(QQMsgUtil.getJsonArrayResult(response).toJSONString(), FriendStatusBo.class);
     }
 
@@ -275,7 +275,7 @@ public class QQInfoUtil {
      */
     public static UserInfoBo getAccountInfo() {
 
-        Response<String> response = HttpUtil.get(ApiURL.GET_ACCOUNT_INFO, Global.session);
+        Response<String> response = HttpUtil.get(ApiURL.GET_ACCOUNT_INFO, Status.session);
         return JSON.parseObject(QQMsgUtil.getJsonObjectResult(response).toJSONString(), UserInfoBo.class);
     }
 
@@ -286,7 +286,7 @@ public class QQInfoUtil {
      */
     public static List<DiscussBo> getDiscussList() {
 
-        Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_LIST, Global.session, Global.psessionid, Global.vfwebqq);
+        Response<String> response = HttpUtil.get(ApiURL.GET_DISCUSS_LIST, Status.session, Status.psessionid, Status.vfwebqq);
         return JSON.parseArray(QQMsgUtil.getJsonObjectResult(response).getJSONArray("dnamelist").toJSONString(), DiscussBo.class);
     }
 
@@ -298,45 +298,11 @@ public class QQInfoUtil {
     public static List<GroupBo> getGroupList() {
 
         JSONObject r = new JSONObject();
-        r.put("vfwebqq", Global.vfwebqq);
-        r.put("hash", EncryptUtil.hash(Global.uin, Global.ptwebqq));
+        r.put("vfwebqq", Status.vfwebqq);
+        r.put("hash", EncryptUtil.hash(Status.uin, Status.ptwebqq));
 
-        Response<String> response = HttpUtil.post(ApiURL.GET_GROUP_LIST, r, Global.session);
+        Response<String> response = HttpUtil.post(ApiURL.GET_GROUP_LIST, r, Status.session);
         JSONObject result = QQMsgUtil.getJsonObjectResult(response);
         return JSON.parseArray(result.getJSONArray("gnamelist").toJSONString(), GroupBo.class);
-    }
-
-    /**
-     * 初始化成员信息
-     */
-    public static void refreshQQmembersInfo() {
-        while (true) {
-            logger.info("刷新好友列表");
-            // 获取好友列表
-            Global.friendList = QQInfoUtil.getFriendList();
-            // 获取群列表
-            Global.groupList = QQInfoUtil.getGroupList();
-            // 获取讨论组列表
-            Global.discussList = QQInfoUtil.getDiscussList();
-            // 建立好友id到好友映射
-            for (FriendBo friend : Global.friendList) {
-                Global.friendFromID.put(friend.getUserId(), friend);
-            }
-            // 建立群id到群映射
-            for (GroupBo group : Global.groupList) {
-                Global.groupFromID.put(group.getId(), group);
-            }
-            // 建立讨论组id到讨论组映射
-            for (DiscussBo discuss : Global.discussList) {
-                Global.discussFromID.put(discuss.getId(), discuss);
-            }
-
-            try {
-                // 60秒刷新一次
-                Thread.sleep(60000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

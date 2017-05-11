@@ -1,6 +1,6 @@
 package com.hatim.service;
 
-import com.hatim.common.constant.enu.ReplyType;
+import com.hatim.bo.SendMsgBo;
 
 /**
  * 傻逼AI
@@ -9,12 +9,12 @@ import com.hatim.common.constant.enu.ReplyType;
 public interface AIService {
 
     /**
-     * 消息匹配，判断是否需要做回复处理
+     * 消息匹配，并回复处理
      *
      * @param msg 用户发送的消息
      * @return
      */
-    ReplyType msgMatching(String msg);
+    SendMsgBo msgMatching(String msg);
 
     /**
      * 转链服务

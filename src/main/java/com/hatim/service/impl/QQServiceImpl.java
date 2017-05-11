@@ -1,10 +1,13 @@
 package com.hatim.service.impl;
 
+import com.hatim.bo.DiscussBo;
+import com.hatim.bo.FriendBo;
+import com.hatim.bo.GroupBo;
 import com.hatim.bo.UserInfoBo;
-import com.hatim.common.constant.Global;
+import com.hatim.common.constant.Status;
 import com.hatim.common.constant.enu.ApiURL;
 import com.hatim.common.utils.*;
-import com.hatim.service.QQMessageService;
+import com.hatim.service.MessageService;
 import com.hatim.service.QQService;
 import net.dongliu.requests.Response;
 import net.dongliu.requests.exception.RequestException;
@@ -28,7 +31,7 @@ public class QQServiceImpl implements QQService {
     private static final Logger logger = LoggerFactory.getLogger(QQServiceImpl.class);
 
     @Autowired
-    QQMessageService qqMessageService;
+    MessageService qqMessageService;
 
     /**
      * 开启服务
@@ -42,7 +45,7 @@ public class QQServiceImpl implements QQService {
         QQLoginUtil.getQRCode();
 
         logger.info("等待扫描二维码");
-        Global.isWaittingLogin = true;
+        Status.isWaittingLogin = true;
         boolean flag = true;
         //阻塞直到确认二维码认证成功
         while (flag) {
@@ -51,7 +54,7 @@ public class QQServiceImpl implements QQService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Response<String> response = HttpUtil.get(ApiURL.VERIFY_QR_CODE, Global.session, EncryptUtil.hash33(Global.qrsig));
+            Response<String> response = HttpUtil.get(ApiURL.VERIFY_QR_CODE, Status.session, EncryptUtil.hash33(Status.qrsig));
             String result = response.getBody();
             logger.info("result:{}", result);
             if (result.contains("成功")) {
@@ -82,8 +85,7 @@ public class QQServiceImpl implements QQService {
                 QQLoginUtil.getQRCode();
             }
         }
-        // TODO 这里的信息要定时刷新
-        QQInfoUtil.refreshQQmembersInfo();
+        refresh();
     }
 
     /**
@@ -94,6 +96,42 @@ public class QQServiceImpl implements QQService {
     @Override
     public boolean stopService() {
         return false;
+    }
+
+    /**
+     * 比如刷新好友列表
+     */
+    @Async
+    @Override
+    public void refresh() {
+        while (true) {
+            logger.info("刷新好友列表");
+            // 获取好友列表
+            Status.friendList = QQInfoUtil.getFriendList();
+            // 获取群列表
+            Status.groupList = QQInfoUtil.getGroupList();
+            // 获取讨论组列表
+            Status.discussList = QQInfoUtil.getDiscussList();
+            // 建立好友id到好友映射
+            for (FriendBo friend : Status.friendList) {
+                Status.friendFromID.put(friend.getUserId(), friend);
+            }
+            // 建立群id到群映射
+            for (GroupBo group : Status.groupList) {
+                Status.groupFromID.put(group.getId(), group);
+            }
+            // 建立讨论组id到讨论组映射
+            for (DiscussBo discuss : Status.discussList) {
+                Status.discussFromID.put(discuss.getId(), discuss);
+            }
+
+            try {
+                // 60秒刷新一次
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
