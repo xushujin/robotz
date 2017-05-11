@@ -1,6 +1,7 @@
 package com.hatim.web;
 
 import com.hatim.common.constant.Status;
+import com.hatim.common.utils.Base64Image;
 import com.hatim.service.QQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +35,14 @@ public class LoginController {
         if (!Status.isWaittingLogin) {
             Status.imgUrl = identifying_img_path;
             smartQQService.startService();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         map.addAttribute("myTitle", "qq登录");
-        map.addAttribute("imgPath", "/image/qrcode.png");
+        map.addAttribute("imgStr", "data:image/png;base64," + Base64Image.GetImageStr(identifying_img_path));
         return "login";
     }
 
